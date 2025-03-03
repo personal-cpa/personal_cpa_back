@@ -1,0 +1,29 @@
+fail_fast: true
+
+repos:
+
+- repo: https://github.com/charliermarsh/ruff-pre-commit
+  rev: v0.9.6
+  hooks:
+  - id: ruff-format
+    args: [ personal_cpa, tests ]
+  - id: ruff
+    args: [ "--fix", "--exit-non-zero-on-fix" ]
+
+- repo: https://github.com/codespell-project/codespell
+  rev: v2.3.0
+  hooks:
+  - id: codespell
+    args: [ "personal_cpa" ]
+
+- repo: https://github.com/RobertCraigie/pyright-python
+  rev: v1.1.393
+  hooks:
+  - id: pyright
+    args: [ personal_cpa, tests ]
+    language: system
+
+- repo: https://github.com/terrencepreilly/darglint
+  rev: v1.8.1
+  hooks:
+  - id: darglint

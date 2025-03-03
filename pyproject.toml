@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "personal-cpa"
+version = "25.3.1"
+description = ""
+authors = ["mildsalmon <mildsalmon@gmail.com>"]
+readme = "README.md"
+packages = [
+    {include = "personal_cpa"}
+]
+
+[tool.poetry.dependencies]
+python = "3.13.1"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.9.9"
+pre-commit = "^4.1.0"
+pyright = "^1.1.396"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
