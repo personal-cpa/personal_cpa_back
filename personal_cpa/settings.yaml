@@ -1,0 +1,3 @@
+local:
+  ENVIRONMENT: "local"
+  LOG_LEVEL: "DEBUG"
