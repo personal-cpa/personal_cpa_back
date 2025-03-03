@@ -1,0 +1,28 @@
+# https://taskfile.dev
+
+version: "3"
+
+tasks:
+  # ----------------------------------------------------------------------------
+  # Backend Server
+  # ----------------------------------------------------------------------------
+
+  run-server:
+    summary: Run the server
+    cmds:
+    - uvicorn personal_cpa.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # ----------------------------------------------------------------------------
+  # Code Quality
+  # ----------------------------------------------------------------------------
+
+  code-clean:
+    summary: Clean the code (lint, isort, format)
+    cmds:
+    - ruff format .
+    - ruff check . --fix
+
+  test:
+    summary: Run the tests
+    cmds:
+    - pytest
