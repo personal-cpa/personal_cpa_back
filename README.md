@@ -119,6 +119,7 @@ gitGraph
     commit
     checkout develop
     merge feature/todo-list
+    commit  %% develop에 추가 커밋 추가
     branch release/25.3.1
     checkout release/25.3.1
     merge develop
