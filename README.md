@@ -129,8 +129,6 @@ gitGraph
     commit
     checkout main
     merge bugfix/auth-error
-    checkout develop
-    merge main
 ```
 
 ### 주요 브랜치
