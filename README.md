@@ -119,10 +119,10 @@ gitGraph
     commit
     checkout develop
     merge feature/todo-list
-    checkout release/25.3.1
+    checkout release/25-3-1
     merge develop
     checkout main
-    merge release/25.3.1
+    merge release/25-3-1
     branch bugfix/auth-error
     checkout bugfix/auth-error
     commit
