@@ -129,6 +129,8 @@ gitGraph
     checkout develop
     merge main
     commit
+    checkout main
+    merge develop
 ```
 
 ### 주요 브랜치
