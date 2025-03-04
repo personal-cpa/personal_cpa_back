@@ -21,6 +21,7 @@ tasks:
     cmds:
     - ruff format .
     - ruff check . --fix
+    - pyright .
 
   test:
     summary: Run the tests

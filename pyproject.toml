@@ -10,6 +10,11 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "3.13.1"
+fastapi = "^0.115.11"
+dynaconf = "^3.2.10"
+pydantic = "^2.10.6"
+pydantic-settings = "^2.8.1"
+uvicorn = "^0.34.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.9.9"
