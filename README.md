@@ -1,4 +1,4 @@
-# 🚀 AWS Serverless TODO 애플리케이션
+# 🚀 Personal CPA Application
 
 TBD
 
@@ -119,13 +119,17 @@ gitGraph
     commit
     checkout develop
     merge feature/todo-list
+    checkout release/25.3.1
+    merge develop
+    checkout main
+    merge release/25.3.1
     branch bugfix/auth-error
     checkout bugfix/auth-error
     commit
-    checkout develop
-    merge bugfix/auth-error
     checkout main
-    merge develop
+    merge bugfix/auth-error
+    checkout develop
+    merge main
 ```
 
 ### 주요 브랜치
