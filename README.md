@@ -119,9 +119,9 @@ gitGraph
     commit
     checkout develop
     merge feature/todo-list
-    commit  %% develop에 추가 커밋 추가
     branch release/25.3.1
     checkout release/25.3.1
+    commit
     merge develop
     checkout main
     merge release/25.3.1
@@ -130,6 +130,8 @@ gitGraph
     commit
     checkout main
     merge bugfix/auth-error
+    checkout develop
+    merge main
 ```
 
 ### 주요 브랜치
