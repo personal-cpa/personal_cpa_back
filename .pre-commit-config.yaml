@@ -6,7 +6,7 @@ repos:
   rev: v0.9.6
   hooks:
   - id: ruff-format
-    args: [ personal_cpa, tests ]
+    args: [ src, tests ]
   - id: ruff
     args: [ "--fix", "--exit-non-zero-on-fix" ]
 
@@ -14,13 +14,13 @@ repos:
   rev: v2.3.0
   hooks:
   - id: codespell
-    args: [ "personal_cpa" ]
+    args: [ "src" ]
 
 - repo: https://github.com/RobertCraigie/pyright-python
   rev: v1.1.393
   hooks:
   - id: pyright
-    args: [ personal_cpa, tests ]
+    args: [ src, tests ]
     language: system
 
 - repo: https://github.com/terrencepreilly/darglint
