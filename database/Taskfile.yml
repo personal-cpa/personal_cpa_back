@@ -1,0 +1,85 @@
+# https://taskfile.dev
+
+version: "3"
+
+env:
+  ROOT_PATH:
+    sh: git rev-parse --show-toplevel
+  CONFIG_PATH: '{{.ROOT_PATH}}/config.yml'
+  MYSQL_DATABASE:
+    sh: yq '.local.DB_DATABASE' {{.CONFIG_PATH}}
+  MYSQL_USERNAME:
+    sh: yq '.local.DB_USERNAME' {{.CONFIG_PATH}}
+  MYSQL_PASSWORD:
+    sh: yq '.local.DB_PASSWORD' {{.CONFIG_PATH}}
+  MYSQL_PORT:
+    sh: yq '.local.DB_PORT' {{.CONFIG_PATH}}
+  MYSQL_ROOT_PASSWORD:
+    sh: yq '.local.DB_ROOT_PASSWORD' {{.CONFIG_PATH}}
+
+tasks:
+  # -----------------
+  # Install
+  # -----------------
+  install:
+    summary: "install atlas"
+    cmds:
+      - brew install ariga/tap/atlas
+      - brew install k1LoW/tap/tbls
+
+  # -----------------
+  # Migration
+  # -----------------
+  gen-diff:
+    summary: "database.hcl을 사용해 마이그레이션 diff 파일 생성"
+    cmds:
+      - ./gen-diff.sh {{.CLI_ARGS}}
+    vars:
+      NAME: '{{.CLI_ARGS | default "update"}}'
+
+  regen-last-diff:
+    summary: "database.hcl을 사용해 마지막 마이그레이션 diff 파일 재생성"
+    cmds:
+      - ./regen-last-diff.sh
+
+  new:
+    summary: "수동으로 마이그레이션용 .sql 생성"
+    cmds:
+      - atlas migrate new --dir file://migrations {{.CLI_ARGS}}
+
+  hash:
+    summary: "SQL 수동 변경시 hash 재계산"
+    cmds:
+      - atlas migrate hash --dir file://migrations
+
+  doc:
+    summary: "DB 스키마 문서 생성"
+    cmds:
+      - tbls doc --dsn mysql://$MYSQL_USERNAME:$MYSQL_PASSWORD@localhost:$MYSQL_ROOT/$MYSQL_DATABASE --rm-dist
+
+  dryrun-local:
+    summary: "local 환경 적용 전 DryRun 실행"
+    cmds:
+      - atlas migrate apply --dry-run --env local --allow-dirty
+        --var user=$MYSQL_USERNAME
+        --var password=$MYSQL_PASSWORD
+        --var port=$MYSQL_PORT
+        --var database=$MYSQL_DATABASE
+
+  migrate-local:
+    summary: "local 환경 마이그레이션 실행"
+    cmds:
+      - atlas migrate apply --env local --allow-dirty
+        --var user=$MYSQL_USERNAME
+        --var password=$MYSQL_PASSWORD
+        --var port=$MYSQL_PORT
+        --var database=$MYSQL_DATABASE
+
+  migrate-rm:
+    summary: "local 환경 마이그레이션 삭제"
+    cmds:
+      - atlas migrate rm --env local {{.CLI_ARGS}}
+        --var user=$MYSQL_USERNAME
+        --var password=$MYSQL_PASSWORD
+        --var port=$MYSQL_PORT
+        --var database=$MYSQL_DATABASE

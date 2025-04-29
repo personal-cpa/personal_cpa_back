@@ -2,39 +2,79 @@
 
 version: "3"
 
+includes:
+  database:
+    taskfile: database/Taskfile.yml
+    dir: database
+  docker-compose:
+    taskfile: docker-compose/Taskfile.yml
+    dir: docker-compose
+  app:
+    taskfile: src/Taskfile.yml
+    dir: src
+
 tasks:
   # ----------------------------------------------------------------------------
   # Init setting
   # ----------------------------------------------------------------------------
-
   init-setting:
     summary: Package initial setting
     cmds:
+      - task: install-dev-tools
       - pyenv virtualenv 3.13.1 personal_cpa
       - poetry install --no-root --with dev
       - pre-commit install
 
+  install-dev-tools:
+    summary: "로컬 개발 환경에 필요한 도구를 설치합니다."
+    cmds:
+      - brew install yq
+      - task: database:install
+
   # ----------------------------------------------------------------------------
   # Backend Server
   # ----------------------------------------------------------------------------
-
-  run-server:
-    summary: Run the server
+  run-app-local:
+    summary: "local 개발 환경 서버 실행"
+    deps: [db-start]
     cmds:
-    - uvicorn personal_cpa.main:app --host 0.0.0.0 --port 8000 --reload
+      - defer: task docker-compose:down
+      - task: app:dev-local
+
+  # ----------------------------------------------------------------------------
+  # Docker Compose
+  # ----------------------------------------------------------------------------
+  db-start:
+    summary: "컨테이너 기반 mysql 서버 실행"
+    cmds:
+      - task: docker-compose:up
+      - task: docker-compose:wait-db
+      - task: database:migrate-local
+
+  db-stop:
+    summary: "컨테이너 기반 mysql 서버 중단"
+    cmds:
+      - task: docker-compose:down
+
+  db-restart:
+    summary: "컨테이너 기반 mysql 서버 재시작"
+    cmds:
+      - task: db-stop
+      - task: db-start
 
   # ----------------------------------------------------------------------------
   # Code Quality
   # ----------------------------------------------------------------------------
-
   code-clean:
     summary: Clean the code (lint, isort, format)
     cmds:
-    - ruff format .
-    - ruff check . --fix
-    - pyright .
+      - ruff format .
+      - ruff check . --fix
+      - pyright .
 
   test:
     summary: Run the tests
     cmds:
-    - pytest
+      - PYTHONPATH=./src pytest --cov=src/personal_cpa --cov-report=term --cov-report=html
+      - coverage xml
+      - diff-cover coverage.xml --compare-branch=origin/main

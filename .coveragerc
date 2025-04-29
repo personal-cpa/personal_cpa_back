@@ -1,0 +1,14 @@
+[run]
+source = personal_cpa
+branch = True
+
+[report]
+omit =
+    */tests/*
+    */__init__.py
+    */config.py
+    */main.py
+    */inbound/api/routes/*
+exclude_lines =
+    pragma: no cover
+    if __name__ == .__main__.:

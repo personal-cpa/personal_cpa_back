@@ -9,12 +9,10 @@ from pathlib import Path
 from dynaconf import Dynaconf
 from pydantic_settings import BaseSettings
 
-PROJECT_ROOT = Path(__file__).parent.parent
-SETTINGS_FILE = os.getenv("SETTINGS_FILE", str(PROJECT_ROOT / "settings.yaml"))
+PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
+CONFIG_PATH = os.getenv("SETTINGS_FILE", str(PROJECT_ROOT / "config.yml"))
 
-settings = Dynaconf(
-    settings_files=[SETTINGS_FILE], environments=True, env_switcher="PERSONAL_CPA_ENV", default_env="local"
-)
+config = Dynaconf(settings_files=[CONFIG_PATH], environments=True, env_switcher="PERSONAL_CPA_ENV", default_env="local")
 
 
 class AppSettings(BaseSettings):
@@ -29,7 +27,7 @@ class AppSettings(BaseSettings):
 
     APP_NAME: str = "Personal CPA"
     APP_VERSION: str = "25.3.1"
-    ENVIRONMENT: str = str(settings.ENVIRONMENT)
+    ENVIRONMENT: str = str(config.ENVIRONMENT)
 
 
 @lru_cache

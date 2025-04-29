@@ -1,0 +1,5 @@
+{
+  "exclude": [
+    "tests/unit/domain/test_chart_of_account.py"
+  ]
+}

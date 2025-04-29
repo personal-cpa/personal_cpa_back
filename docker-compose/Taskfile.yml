@@ -1,0 +1,54 @@
+# https://taskfile.dev
+
+version: "3"
+
+env:
+  ROOT_PATH:
+    sh: git rev-parse --show-toplevel
+  CONFIG_PATH: '{{.ROOT_PATH}}/config.yml'
+  MYSQL_DATABASE:
+    sh: yq '.local.DB_DATABASE' {{.CONFIG_PATH}}
+  MYSQL_USERNAME:
+    sh: yq '.local.DB_USERNAME' {{.CONFIG_PATH}}
+  MYSQL_PASSWORD:
+    sh: yq '.local.DB_PASSWORD' {{.CONFIG_PATH}}
+  MYSQL_PORT:
+    sh: yq '.local.DB_PORT' {{.CONFIG_PATH}}
+  MYSQL_ROOT_PASSWORD:
+    sh: yq '.local.DB_ROOT_PASSWORD' {{.CONFIG_PATH}}
+
+tasks:
+  # -----------------
+  # Docker Compose
+  # -----------------
+  debug-env:
+    cmds:
+      - echo "MYSQL_DATABASE=$MYSQL_DATABASE"
+      - echo "MYSQL_USERNAME=$MYSQL_USERNAME"
+      - echo "MYSQL_PASSWORD=$MYSQL_PASSWORD"
+      - echo "MYSQL_PORT=$MYSQL_PORT"
+      - echo "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD"
+
+  up:
+    cmds:
+      - task debug-env
+      - docker compose up -d
+
+  logs:
+    cmds:
+      - docker compose logs -f
+
+  wait-db:
+    cmds:
+      - cmd: ./wait-db-ready.sh
+        silent: true
+      - cmd: echo "DB is ready on $MYSQL_PORT port."
+        silent: true
+
+  down:
+    cmds:
+      - docker compose down
+
+  rm:
+    cmds:
+      - docker compose down --remove-orphans --volumes
