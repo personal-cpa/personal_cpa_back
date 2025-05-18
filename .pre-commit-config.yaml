@@ -6,8 +6,12 @@ repos:
   rev: v0.9.6
   hooks:
   - id: ruff-format
-    args: [ src, tests ]
+    files: ^src/
+    exclude: ^tests/
+    args: [ src ]
   - id: ruff
+    files: ^src/
+    exclude: ^tests/
     args: [ "--fix", "--exit-non-zero-on-fix" ]
 
 - repo: https://github.com/codespell-project/codespell
@@ -20,10 +24,19 @@ repos:
   rev: v1.1.393
   hooks:
   - id: pyright
-    args: [ src, tests ]
+    args: [ src ]
     language: system
 
 - repo: https://github.com/terrencepreilly/darglint
   rev: v1.8.1
   hooks:
   - id: darglint
+
+- repo: local
+  hooks:
+    - id: pytest
+      name: pytest
+      entry: poetry run pytest
+      language: system
+      pass_filenames: false
+      always_run: true

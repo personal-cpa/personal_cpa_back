@@ -1,8 +1,8 @@
 # ruff: noqa: ERA001
 import pytest
 
-from src.personal_cpa.domain.chart_of_account import ChartOfAccount
-from src.personal_cpa.domain.enum.chart_of_account import AccountType
+from personal_cpa.domain.chart_of_account import ChartOfAccount
+from personal_cpa.domain.enum.chart_of_account import AccountType
 
 
 def test_chart_of_account_valid_instance():
