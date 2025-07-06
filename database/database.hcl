@@ -1,6 +1,6 @@
 schema "personal_cpa" {}
 
-table "chart_of_accounts" {
+table "chart_of_account" {
   schema = schema.personal_cpa
   comment = "계정과목"
 

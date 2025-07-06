@@ -21,6 +21,7 @@ class ChartOfAccount:
     is_hidden: bool
     description: str | None
     parent_chart_of_account: ChartOfAccount | None
+    id: int | None = None
 
     _VALID_CODE_CHARACTER = "01234567890-"
 

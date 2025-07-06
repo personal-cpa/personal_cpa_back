@@ -1,5 +1,5 @@
--- Create "chart_of_accounts" table
-CREATE TABLE `chart_of_accounts` (
+-- Create "chart_of_account" table
+CREATE TABLE `chart_of_account` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL COMMENT "사용자 ID",
   `code` varchar(255) NOT NULL COMMENT "계정과목 코드 (e.g. 자산 - 현금: 1-1, 자산 - 주식: 1-2, 부채 - 신용카드: 2-1, 부채 - 마이너스통장: 2-2, 자본 - 자기자본: 3-1, 수익 - 급여: 4-1, 비용 - 식비: 5-1)",
