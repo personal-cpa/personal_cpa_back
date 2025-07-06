@@ -1,5 +1,6 @@
 local:
   LOG_LEVEL: "DEBUG"
+  LOG_FILE: "logs/app.log"
   DB_TYPE: "mysql"
   DB_HOST: "localhost"
   DB_PORT: 33306
@@ -12,6 +13,7 @@ local:
   DB_POOL_IDLE_TIMEOUT: 60000
 prod:
   LOG_LEVEL: "DEBUG"
+  LOG_FILE: "logs/app.log"
   DB_TYPE: "mysql"
   DB_HOST: "prod-test"
   DB_PORT: 3306

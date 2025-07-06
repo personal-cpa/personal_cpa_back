@@ -34,6 +34,7 @@ class AppSettings(BaseSettings):
     ENVIRONMENT: str = config.current_env
 
     LOG_LEVEL: str = config.get("LOG_LEVEL")
+    LOG_FILE: str = str(PROJECT_ROOT / config.get("LOG_FILE"))
     DB_TYPE: str = config.get("DB_TYPE")
     DB_HOST: str = config.get("DB_HOST")
     DB_PORT: int = config.get("DB_PORT")
