@@ -14,13 +14,13 @@ def test_chart_of_account_valid_instance():
         user_id=1,
         name="현금",
         code="101",
-        type=AccountType.ASSET,
+        category=AccountType.ASSET,
         is_hidden=False,
         description="주계좌",
         parent_chart_of_account=None,
     )
     assert account.name == "현금"
-    assert account.type == AccountType.ASSET
+    assert account.category == AccountType.ASSET
 
 
 def test_chart_of_account_empty_name_raises_value_error():
@@ -33,7 +33,7 @@ def test_chart_of_account_empty_name_raises_value_error():
             user_id=1,
             name="   ",
             code="101",
-            type=AccountType.ASSET,
+            category=AccountType.ASSET,
             is_hidden=False,
             description=None,
             parent_chart_of_account=None,
@@ -49,7 +49,7 @@ def test_chart_of_account_empty_code_raises_value_error():
             user_id=1,
             name="현금",
             code="",
-            type=AccountType.ASSET,
+            category=AccountType.ASSET,
             is_hidden=False,
             description=None,
             parent_chart_of_account=None,
@@ -66,7 +66,7 @@ def test_chart_of_account_invalid_type_raises_type_error():
             user_id=1,
             name="현금",
             code="101",
-            type="ASSET",  # 잘못된 타입
+            category="ASSET",  # 잘못된 타입
             is_hidden=False,
             description=None,
             parent_chart_of_account=None,
@@ -83,7 +83,7 @@ def test_chart_of_account_invalid_code_character_raises_value_error():
             user_id=1,
             name="현금",
             code="10A1",  # 'A'는 허용되지 않음
-            type=AccountType.ASSET,
+            category=AccountType.ASSET,
             is_hidden=False,
             description=None,
             parent_chart_of_account=None,
@@ -99,7 +99,7 @@ def test_chart_of_account_parent_type_mismatch_raises_value_error():
         user_id=1,
         name="부채계정",
         code="200",
-        type=AccountType.LIABILITY,
+        category=AccountType.LIABILITY,
         is_hidden=False,
         description=None,
         parent_chart_of_account=None,
@@ -109,7 +109,7 @@ def test_chart_of_account_parent_type_mismatch_raises_value_error():
             user_id=1,
             name="현금",
             code="101",
-            type=AccountType.ASSET,
+            category=AccountType.ASSET,
             is_hidden=False,
             description=None,
             parent_chart_of_account=parent,

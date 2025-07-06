@@ -1,9 +1,7 @@
-from enum import auto
-
-from personal_cpa.core.auto_named_enum import AutoNamedEnum
+from enum import IntEnum
 
 
-class AccountType(AutoNamedEnum):
+class AccountType(IntEnum):
     """
     복식부기 회계 시스템에서 사용되는 계정의 기본 유형(Enum)입니다.
 
@@ -34,8 +32,8 @@ class AccountType(AutoNamedEnum):
         식비, 교통비, 통신비, 보험료, 수수료, 세금, 대출이자, 생활비 등
     """
 
-    ASSET = auto()
-    LIABILITY = auto()
-    EQUITY = auto()
-    REVENUE = auto()
-    EXPENSE = auto()
+    ASSET = 1
+    LIABILITY = 2
+    EQUITY = 3
+    REVENUE = 4
+    EXPENSE = 5
