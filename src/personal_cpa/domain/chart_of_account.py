@@ -18,9 +18,9 @@ class ChartOfAccount:
     code: str
     name: str
     category: AccountType
-    is_hidden: bool
     description: str | None
-    parent_chart_of_account: ChartOfAccount | None
+    parent_chart_of_account_id: int | None
+    is_hidden: bool | None = False
     id: int | None = None
 
     _VALID_CODE_CHARACTER = "01234567890-"
@@ -47,7 +47,19 @@ class ChartOfAccount:
             raise TypeError(f"type must be an AccountType enum. (Currently: {type(self.category)})")
         if any(c not in self._VALID_CODE_CHARACTER for c in self.code):
             raise ValueError(f"code can only be a number OR -. (Currently: {self.code})")
-        if self.parent_chart_of_account and self.category != self.parent_chart_of_account.category:
-            raise ValueError(
-                f"The parent account's type({self.parent_chart_of_account.category}) and the current account type({self.category}) must match."
-            )
+
+
+@dataclass
+class ChartOfAccountTree:
+    """
+    계정과목 트리를 표현하는 도메인 모델.
+    """
+
+    user_id: int
+    code: str
+    name: str
+    category: AccountType
+    children: list[ChartOfAccountTree]
+    description: str | None
+    parent_chart_of_account_id: int | None
+    id: int | None = None

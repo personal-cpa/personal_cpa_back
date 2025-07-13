@@ -6,7 +6,7 @@ import logging.config
 from pathlib import Path
 import sys
 
-from personal_cpa.core.config import AppSettings
+from personal_cpa.config import AppSettings
 
 
 def setup_logging(settings: AppSettings) -> None:
