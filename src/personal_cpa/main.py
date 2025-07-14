@@ -54,7 +54,7 @@ async def logging_middleware(request: Request, call_next: RequestResponseEndpoin
 
 
 app = FastAPI(title=settings.APP_NAME, version=settings.APP_VERSION)
-app.container = container
+app.container = container  # pyright: ignore reportAttributeAccessIssue
 
 app.middleware("http")(logging_middleware)
 error_handler.add_error_handlers(app)

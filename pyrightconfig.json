@@ -1,6 +1,5 @@
 {
   "reportArgumentType": false,
-  "reportAttributeAccessIssue": false,
   "exclude": [
     "tests"
   ]
