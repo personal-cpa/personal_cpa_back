@@ -11,7 +11,7 @@ import urllib.parse
 from dynaconf import Dynaconf
 from pydantic_settings import BaseSettings
 
-PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 CONFIG_PATH = os.getenv("SETTINGS_FILE", str(PROJECT_ROOT / "config.yml"))
 
 config = Dynaconf(

@@ -1,0 +1,29 @@
+# AI가 프로젝트를 이해하는 데 도움이 되는 파일들을 지정합니다.
+# 주로 소스 코드, 설정 파일, 문서 등을 포함합니다.
+[rules]
+src/**/*.py
+tests/**/*.py
+pyproject.toml
+README.md
+config.yml
+database/**/*.py
+docker-compose/**/*.yml
+.pre-commit-config.yaml
+Taskfile.yml
+
+# AI가 무시해야 할 파일 및 디렉토리를 지정합니다.
+# 캐시, 로그, 빌드 결과물, 민감한 정보 파일 등을 포함합니다.
+[ignore]
+__pycache__/
+*.pyc
+.ruff_cache/
+.pytest_cache/
+htmlcov/
+.coverage
+.idea/
+.git/
+.env
+logs/
+
+# auto import 설정
+모든 import문은 `personal_cpa.src`로 시작합니다.

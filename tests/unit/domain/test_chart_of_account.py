@@ -17,7 +17,7 @@ def test_chart_of_account_valid_instance():
         category=AccountType.ASSET,
         is_hidden=False,
         description="주계좌",
-        parent_chart_of_account=None,
+        parent_chart_of_account_id=None,
     )
     assert account.name == "현금"
     assert account.category == AccountType.ASSET
@@ -36,7 +36,7 @@ def test_chart_of_account_empty_name_raises_value_error():
             category=AccountType.ASSET,
             is_hidden=False,
             description=None,
-            parent_chart_of_account=None,
+            parent_chart_of_account_id=None,
         )
 
 
@@ -52,7 +52,7 @@ def test_chart_of_account_empty_code_raises_value_error():
             category=AccountType.ASSET,
             is_hidden=False,
             description=None,
-            parent_chart_of_account=None,
+            parent_chart_of_account_id=None,
         )
 
 
@@ -69,7 +69,7 @@ def test_chart_of_account_invalid_type_raises_type_error():
             category="ASSET",  # 잘못된 타입
             is_hidden=False,
             description=None,
-            parent_chart_of_account=None,
+            parent_chart_of_account_id=None,
         )
 
 
@@ -86,33 +86,7 @@ def test_chart_of_account_invalid_code_character_raises_value_error():
             category=AccountType.ASSET,
             is_hidden=False,
             description=None,
-            parent_chart_of_account=None,
-        )
-
-
-def test_chart_of_account_parent_type_mismatch_raises_value_error():
-    """
-    Test Case: 부모 AccountType 일치 검사
-    :return:
-    """
-    parent = ChartOfAccount(
-        user_id=1,
-        name="부채계정",
-        code="200",
-        category=AccountType.LIABILITY,
-        is_hidden=False,
-        description=None,
-        parent_chart_of_account=None,
-    )
-    with pytest.raises(ValueError, match="must match"):
-        ChartOfAccount(
-            user_id=1,
-            name="현금",
-            code="101",
-            category=AccountType.ASSET,
-            is_hidden=False,
-            description=None,
-            parent_chart_of_account=parent,
+            parent_chart_of_account_id=None,
         )
 
 
@@ -124,7 +98,7 @@ def test_chart_of_account_parent_type_mismatch_raises_value_error():
 #         type=AccountType.ASSET,
 #         is_hidden=False,
 #         description=None,
-#         parent_chart_of_account=None
+#         parent_chart_of_account_id=None
 #     )
 #     child = ChartOfAccount(
 #         user_id=1,
@@ -133,6 +107,6 @@ def test_chart_of_account_parent_type_mismatch_raises_value_error():
 #         type=AccountType.ASSET,
 #         is_hidden=False,
 #         description=None,
-#         parent_chart_of_account=parent
+#         parent_chart_of_account_id=parent
 #     )
-#     assert child.parent_chart_of_account == parent
+#     assert child.parent_chart_of_account_id == parent

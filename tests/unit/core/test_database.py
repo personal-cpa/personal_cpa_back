@@ -12,8 +12,8 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 
-from personal_cpa.core.config import AppSettings
-from personal_cpa.infrastructure.database import Database
+from personal_cpa.config import AppSettings
+from personal_cpa.database import Database
 
 # 테스트용 Base 모델
 Base = declarative_base()
@@ -84,7 +84,7 @@ def test_database_init(app_settings):
     Args:
         app_settings: 애플리케이션 설정 객체
     """
-    with patch("personal_cpa.infrastructure.database.create_engine") as mock_create_engine:
+    with patch("personal_cpa.database.create_engine") as mock_create_engine:
         Database(app_settings)
 
         mock_create_engine.assert_called_once_with(

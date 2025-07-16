@@ -2,6 +2,7 @@ from attr import dataclass
 
 from personal_cpa.adapter.outbound.database.model.chart_of_account import ChartOfAccountEntity
 from personal_cpa.domain.chart_of_account import ChartOfAccount
+from personal_cpa.domain.enum.chart_of_account import AccountType
 
 
 @dataclass
@@ -25,10 +26,10 @@ class ChartOfAccountMapper:
             user_id=entity.user_id,
             code=entity.code,
             name=entity.name,
-            category=entity.category,
+            category=AccountType(entity.category),
             is_hidden=entity.is_hidden,
             description=entity.description,
-            parent_chart_of_account=None,
+            parent_chart_of_account_id=entity.parent_chart_of_account_id,
             id=entity.id,
         )
 
@@ -43,17 +44,13 @@ class ChartOfAccountMapper:
         Returns:
             계정과목 모델
         """
-        parent_id = None
-        if domain.parent_chart_of_account:
-            parent_id = domain.parent_chart_of_account.id
-
         return ChartOfAccountEntity(
             id=domain.id,
             user_id=domain.user_id,
             code=domain.code,
             name=domain.name,
-            category=domain.category,
+            category=domain.category.value,
             is_hidden=domain.is_hidden,
             description=domain.description,
-            parent_chart_of_account_id=parent_id,
+            parent_chart_of_account_id=domain.parent_chart_of_account_id,
         )
