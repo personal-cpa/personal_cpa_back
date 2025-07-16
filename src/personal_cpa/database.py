@@ -45,8 +45,8 @@ class Database:
         try:
             yield session
             session.commit()
-        except Exception as e:
+        except Exception:
             session.rollback()
-            raise e from e
+            raise
         finally:
             self._session_scoped.remove()

@@ -17,7 +17,7 @@ class ChartOfAccountPort(ABC):
             chart_of_accounts: 계정과목 목록
 
         Returns:
-            계정과목 목록q
+            계정과목 목록
         """
 
     @abstractmethod

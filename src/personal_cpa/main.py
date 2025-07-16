@@ -8,12 +8,12 @@ import time
 from fastapi import FastAPI, Request
 from starlette.middleware.base import RequestResponseEndpoint
 
-from core.logger import setup_logging
 from personal_cpa.adapter.inbound.api import error_handler
 from personal_cpa.adapter.inbound.api.routes import chart_of_account, health
 from personal_cpa.config import get_settings
 from personal_cpa.container import Container
 from personal_cpa.exceptions import PersonalCPAError
+from personal_cpa.logger import setup_logging
 
 settings = get_settings()
 setup_logging(settings)
@@ -21,7 +21,7 @@ setup_logging(settings)
 logger = logging.getLogger(settings.APP_NAME)
 
 container = Container()
-container.wire(packages=[".adapter"])
+container.wire(packages=["personal_cpa.adapter.inbound.api.routes"])
 
 
 async def logging_middleware(request: Request, call_next: RequestResponseEndpoint):
