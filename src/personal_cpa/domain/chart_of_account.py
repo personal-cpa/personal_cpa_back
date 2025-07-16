@@ -20,7 +20,7 @@ class ChartOfAccount:
     category: AccountType
     description: str | None
     parent_chart_of_account_id: int | None
-    is_hidden: bool | None = False
+    is_hidden: bool = False
     id: int | None = None
 
     _VALID_CODE_CHARACTER = "01234567890_"
