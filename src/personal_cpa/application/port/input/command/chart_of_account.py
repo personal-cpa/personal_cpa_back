@@ -36,7 +36,7 @@ class CreateChartOfAccountCommand:
         if self.parent_code is None and "_" in self.code:
             raise ValueError(f"code must not contain '_' if parent_code is None. (Currently: {self.code})")
 
-        if not (self.code.rpartition("_")[0] == self.parent_code):
+        if self.parent_code and self.code.rpartition("_")[0] != self.parent_code:
             raise ValueError(
                 f"Parent chart of account with code {self.parent_code} must be a prefix of the current account's code {self.code}."
             )
