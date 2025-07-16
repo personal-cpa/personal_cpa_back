@@ -10,7 +10,6 @@ from personal_cpa.application.port.input.use_case.chart_of_account import (
 )
 from personal_cpa.application.port.output.chart_of_account import ChartOfAccountPort
 from personal_cpa.domain.chart_of_account import ChartOfAccount, ChartOfAccountTree
-from personal_cpa.domain.enum.chart_of_account import AccountType
 
 logger = logging.getLogger(__name__)
 
@@ -45,14 +44,16 @@ class ChartOfAccountService(SearchChartOfAccountUseCase, ManageChartOfAccountUse
         chart_of_accounts = []
 
         for command in commands:
-            _ = self._assert_chart_of_account_exists(user_id, command.code)
+            self._assert_chart_of_account_exists(user_id, command.code)
 
             parent_chart_of_account_id = None
             if command.parent_code:
-                parent_chart_of_account = self._assert_parent_chart_of_account_exists(
-                    user_id, command.category, command.code, command.parent_code
+                parent_chart_of_account = self.chart_of_account_port.find_chart_of_account_by_code(
+                    user_id, command.parent_code
                 )
-                parent_chart_of_account_id = parent_chart_of_account.id
+                self._assert_parent_chart_of_account(command, parent_chart_of_account)
+                if parent_chart_of_account:
+                    parent_chart_of_account_id = parent_chart_of_account.id
 
             chart_of_accounts.append(
                 ChartOfAccount(
@@ -161,49 +162,33 @@ class ChartOfAccountService(SearchChartOfAccountUseCase, ManageChartOfAccountUse
         if chart_of_account:
             raise ValueError(f"Chart of account with code {code} already exists.")
 
-    def _assert_parent_chart_of_account_exists(
-        self, user_id: int, category: AccountType, code: str, parent_code: str
-    ) -> ChartOfAccount:
+    def _assert_parent_chart_of_account(
+        self, input_coa: CreateChartOfAccountCommand, stored_coa: ChartOfAccount | None
+    ) -> None:
         """
-        상위 계정과목 존재 여부 검사
+        상위 계정과목 유효성 검사
 
         검사항목
-            1. 상위 계정과목 코드가 유효한지 검사
+            1. 상위 계정과목 존재 여부 검사
             2. 현재 계정과목 카테고리와 상위 계정과목 카테고리가 일치하는지 검사
-            3. 현재 계정과목 코드가 상위 계정과목 코드로 시작하는지 검사
-            4. 상위 계정과목이 숨겨져 있지 않은지 검사
+            3. 상위 계정과목이 숨겨져 있지 않은지 검사
 
         Args:
-            user_id: 유저 ID
-            category: 계정과목 유형
-            code: 계정과목 코드
-            parent_code: 상위 계정과목 코드
-
-        Returns:
-            ChartOfAccount: 상위 계정과목
+            input_coa: 입력 계정과목
+            stored_coa: 저장된 계정과목
 
         Raises:
             ValueError: 상위 계정과목이 존재하지 않을 경우 발생
             ValueError: 상위 계정과목 카테고리와 현재 계정과목 카테고리가 일치하지 않을 경우 발생
-            ValueError: 현재 계정과목 코드가 상위 계정과목 코드로 시작하지 않을 경우 발생
             ValueError: 상위 계정과목이 숨겨져 있을 경우 발생
         """
-        parent_chart_of_account = self.chart_of_account_port.find_chart_of_account_by_code(user_id, parent_code)
+        if not stored_coa:
+            raise ValueError(f"Parent chart of account with code {input_coa.parent_code} not found.")
 
-        if not parent_chart_of_account:
-            raise ValueError(f"Parent chart of account with code {parent_code} not found.")
-
-        if category != parent_chart_of_account.category:
+        if input_coa.category != stored_coa.category:
             raise ValueError(
-                f"Parent chart of account with code {parent_code} and category {parent_chart_of_account.category} must match the current account's category {category}."
+                f"Parent chart of account with category {stored_coa.category} must match the current account's category {input_coa.category}."
             )
 
-        if (not code.rpartition("-")[0] == parent_code) or (not code.rpartition("_")[0] == parent_code):
-            raise ValueError(
-                f"Parent chart of account with code {parent_code} must be a prefix of the current account's code {code}."
-            )
-
-        if parent_chart_of_account.is_hidden:
-            raise ValueError(f"Parent chart of account with code {parent_code} is hidden.")
-
-        return parent_chart_of_account
+        if stored_coa.is_hidden:
+            raise ValueError(f"Parent chart of account with code {stored_coa.code} is hidden.")

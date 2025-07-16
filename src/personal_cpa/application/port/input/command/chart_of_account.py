@@ -22,6 +22,25 @@ class CreateChartOfAccountCommand:
     description: str | None
     parent_code: str | None
 
+    def __post_init__(self) -> None:
+        """
+         후 유효성 검증
+
+            1. 상위 계정과목 코드가 없을 경우 현재 계정과목 코드에 언더바(_)가 없는지 검사
+            2. 현재 계정과목 코드가 상위 계정과목 코드로 시작하는지 검사
+
+        Raises:
+            ValueError: 상위 계정과목 코드가 없을 경우 발생
+            ValueError: 현재 계정과목 코드가 상위 계정과목 코드로 시작하지 않을 경우 발생
+        """
+        if self.parent_code is None and "_" in self.code:
+            raise ValueError(f"code must not contain '_' if parent_code is None. (Currently: {self.code})")
+
+        if not (self.code.rpartition("_")[0] == self.parent_code):
+            raise ValueError(
+                f"Parent chart of account with code {self.parent_code} must be a prefix of the current account's code {self.code}."
+            )
+
 
 @dataclass(frozen=True)
 class UpdateChartOfAccountCommand:

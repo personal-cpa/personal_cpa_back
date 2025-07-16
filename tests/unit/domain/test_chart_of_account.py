@@ -90,7 +90,6 @@ def test_chart_of_account_invalid_code_character_raises_value_error():
         )
 
 
-
 # def test_chart_of_account_parent_type_match_ok():
 #     parent = ChartOfAccount(
 #         user_id=1,

@@ -46,21 +46,23 @@ async def create_chart_of_account(
     Raises:
         HTTPException: 계정과목 생성 요청이 유효하지 않을 경우 발생
     """
-    logger.info(f"requests: {requests}")
     if not requests:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid request")
-    logger.info(f"requests: {requests}")
-    commands = [
-        CreateChartOfAccountCommand(
-            code=request.code,
-            name=request.name,
-            category=request.get_category_enum(),
-            description=request.description,
-            parent_code=request.parent_code,
-        )
-        for request in requests
-    ]
-    logger.info(f"commands: {commands}")
+
+    try:
+        commands = [
+            CreateChartOfAccountCommand(
+                code=request.code,
+                name=request.name,
+                category=request.get_category_enum(),
+                description=request.description,
+                parent_code=request.parent_code,
+            )
+            for request in requests
+        ]
+    except ValueError as value_error:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(value_error)) from value_error
+
     # TODO: user 개발 전까지는 1(master user)로 고정
     user_id = 1
 
