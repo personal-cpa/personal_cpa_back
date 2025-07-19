@@ -130,11 +130,11 @@ async def get_chart_of_account_by_code(
         return chart_of_account
 
 
-@router.put("/{code}")
+@router.put("/{code}", status_code=status.HTTP_200_OK, response_model=ChartOfAccountResponse)
 @inject
 async def update_chart_of_account(
     code: str,
-    request: UpdateChartOfAccountRequest,
+    request: UpdateChartOfAccountRequest | None,
     update_chart_of_account_use_case: Annotated[
         ManageChartOfAccountUseCase, Depends(Provide[Container.chart_of_account_service])
     ],
@@ -157,10 +157,7 @@ async def update_chart_of_account(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid request")
 
     command = UpdateChartOfAccountCommand(
-        name=request.name,
-        category=request.get_category_enum(),
-        is_hidden=request.is_hidden,
-        description=request.description,
+        name=request.name, is_hidden=request.is_hidden, description=request.description
     )
 
     # TODO: user 개발 전까지는 1(master user)로 고정

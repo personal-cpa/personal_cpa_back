@@ -1,5 +1,5 @@
 from contextlib import AbstractContextManager
-from typing import Callable
+from typing import Any, Callable
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -85,16 +85,36 @@ class ChartOfAccountRepository(ChartOfAccountPort):
             entity = result.scalar_one_or_none()
             return ChartOfAccountMapper.to_domain(entity) if entity else None
 
-    def modify_chart_of_account(self, user_id: int, code: str, chart_of_account: ChartOfAccount) -> ChartOfAccount:
+    def modify_chart_of_account(self, user_id: int, code: str, updates: dict[str, Any]) -> ChartOfAccount:
         """
         유저의 계정과목 수정 (비활성화 포함)
 
         Args:
             user_id: 유저 ID
             code: 계정과목 코드
-            chart_of_account: 계정과목
+            updates: 수정할 속성과 값
+
+        Returns:
+            계정과목
 
         Raises:
-            NotImplementedError: 이 기능은 아직 구현되지 않았습니다.
+            ValueError: 계정과목이 존재하지 않을 경우 발생
         """
-        raise NotImplementedError("This feature is not implemented yet")
+        with self.session_factory() as session:
+            entity = (
+                session.query(ChartOfAccountEntity)
+                .filter(ChartOfAccountEntity.user_id == user_id)
+                .filter(ChartOfAccountEntity.code == code)
+            ).first()
+
+            if not entity:
+                raise ValueError(f"Chart of account with id {code} not found.")
+
+            for attr, value in updates.items():
+                if value is not None:
+                    setattr(entity, attr, value)
+
+            session.commit()
+            session.refresh(entity)
+
+            return ChartOfAccountMapper.to_domain(entity)

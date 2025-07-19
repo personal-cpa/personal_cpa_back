@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Any
 
 from personal_cpa.domain.chart_of_account import ChartOfAccount
 
@@ -46,14 +47,14 @@ class ChartOfAccountPort(ABC):
         """
 
     @abstractmethod
-    def modify_chart_of_account(self, user_id: int, code: str, chart_of_account: ChartOfAccount) -> ChartOfAccount:
+    def modify_chart_of_account(self, user_id: int, code: str, updates: dict[str, Any]) -> ChartOfAccount:
         """
         유저의 계정과목 수정 (비활성화 포함)
 
         Args:
             user_id: 유저 ID
             code: 계정과목 코드
-            chart_of_account: 계정과목
+            updates: 수정할 속성과 값
 
         Returns:
             계정과목
