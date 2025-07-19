@@ -47,14 +47,14 @@ class UpdateChartOfAccountCommand:
     """
     계정과목 수정 명령
 
+    변경할 수 있는 속성만 유지
+
     Args:
         name: 계정과목 이름
-        category: 계정과목 카테고리
         is_hidden: 계정과목 숨김 여부
         description: 계정과목 설명
     """
 
     name: str
-    category: AccountType
     is_hidden: bool
-    description: str | None
+    description: str

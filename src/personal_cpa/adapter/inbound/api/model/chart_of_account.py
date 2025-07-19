@@ -70,6 +70,23 @@ class CreateChartOfAccountRequest(CategoryValidationMixin, BaseModel):
     parent_code: str | None = None
 
 
+class UpdateChartOfAccountRequest(BaseModel):
+    """
+    계정과목 수정 요청
+    """
+
+    class Config:
+        """
+        모델 설정
+        """
+
+        validate_default = True
+
+    name: str
+    description: str
+    is_hidden: bool
+
+
 class ChartOfAccountResponse(BaseModel):
     """
     계정과목 응답
@@ -99,14 +116,3 @@ class ChartOfAccountSummaryResponse(BaseModel):
         description=f"계정과목 카테고리({', '.join([account_type.name for account_type in AccountType])})"
     )
     children: list[ChartOfAccountSummaryResponse] | None
-
-
-class UpdateChartOfAccountRequest(CategoryValidationMixin, BaseModel):
-    """
-    계정과목 수정 요청
-    """
-
-    name: str
-    category: int
-    is_hidden: bool
-    description: str | None

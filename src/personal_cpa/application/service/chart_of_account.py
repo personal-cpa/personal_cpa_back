@@ -97,17 +97,17 @@ class ChartOfAccountService(SearchChartOfAccountUseCase, ManageChartOfAccountUse
 
     def update_chart_of_account(self, user_id: int, code: str, command: UpdateChartOfAccountCommand) -> ChartOfAccount:
         """
-        유저의 계정과목 수정
+        유저의 계정과목 수정 (code, category, parent_code 제외)
 
         Args:
             user_id: 유저 ID
             code: 계정과목 코드
             command: 계정과목 수정 명령
 
-        Raises:
-            NotImplementedError: 이 기능은 아직 구현되지 않았습니다.
+        Returns:
+            계정과목
         """
-        raise NotImplementedError("This feature is not implemented yet")
+        return self.chart_of_account_port.modify_chart_of_account(user_id, code, command.__dict__)
 
     def _build_account_tree(self, chart_of_accounts: list[ChartOfAccount]) -> list[ChartOfAccountTree]:
         """
